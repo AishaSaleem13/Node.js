@@ -4,8 +4,7 @@
   "description": "",
   "license": "ISC",
   "author": "",
- "type": "module",
-
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,6 +12,7 @@
     "dev": "nodemon index.mjs"
   },
   "dependencies": {
+    "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
