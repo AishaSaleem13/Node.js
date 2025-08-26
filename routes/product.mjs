@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import Products from "../models/product.mjs";
-// import upload from "../middleware/upload.mjs"
+import upload from "../middleware/upload.mjs";
 
 // Get all products
 router.get("/", async (req, res) => {
@@ -23,25 +23,25 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// router.post('/product',upload.single('image'),async(req,res)=>{
-//         try{
-//             const imageUrl = req.file?.path; // Get the image URL from the uploaded file
-//             const productData = {
-//                 ...req.body,
-//                 image: imageUrl // Add the image URL to the product data
-//             };
+router.post('/product',upload.single('image'),async(req,res)=>{
+        try{
+            const imageUrl = req.file?.path; // Get the image URL from the uploaded file
+            const productData = {
+                ...req.body,
+                image: imageUrl // Add the image URL to the product data
+            };
 
-//             const postProduct=new Products(productData);
-//             await 
-//             postProduct.save() 
-//             res.send({ message: 'data posted successfully' })
-//             console.log("data:", req.body);
+            const postProduct=new Products(productData);
+            await 
+            postProduct.save() 
+            res.send({ message: 'data posted successfully' })
+            console.log("data:", req.body);
             
-//         }
-//         catch(e){
-//             res.status(500).send({message:e.message})
-//         }
-//     })
+        }
+        catch(e){
+            res.status(500).send({message:e.message})
+        }
+    })
 router.put('/:id', async (req, res) => {
     try {
         const updatedAd = await Products.findOneAndUpdate(
