@@ -12,7 +12,7 @@ const app = express()
 app.use(express.json())
 // Root route for testing
 app.get("/", (req, res) => {
-  res.send("API is running ✅");
+  res.send("blah blah bl;ah ✅");
 });
 app.use(cors())
 app.use('/',router)

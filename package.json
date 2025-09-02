@@ -12,6 +12,7 @@
     "dev": "nodemon index.mjs"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^7.9.0",
     "@types/multer": "^2.0.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^1.41.3",
