@@ -30,8 +30,7 @@ return res.status(400).send({message: "invalid product data  "});
       },
     ],
     mode: 'payment',
-    success_url: 'process.envClient_Url /success',
-    cancel_url: 'process.envClient_Url /cancel',
+
   });
 
 
