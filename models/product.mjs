@@ -13,7 +13,7 @@ brand: {
     type:String,
     required:true
 },
-location: {
+availability: {
     type:String,
     required:true
 },
