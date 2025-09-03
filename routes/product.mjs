@@ -23,7 +23,10 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/product',upload.single('image'),async(req,res)=>{
+router.post('/post',upload.single('image'),async(req,res)=>{
+    console.log("REQ BODY:", req.body);
+console.log("REQ FILE:", req.file);
+
         try{
             const imageUrl = req.file?.path; // Get the image URL from the uploaded file
             const productData = {
