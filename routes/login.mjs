@@ -20,33 +20,33 @@ router.post('/register',async(req,res)=>{
     }
 })
 
-router.post('/login',async(req,res)=>{
-    //Step 1: Check if email exists
-    try{
-        const {email,password}=req.body
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-        const user=await Users.findOne({email})
-    if(!user){
-        res.send({message:'User Not Found'})
-        return
+    const user = await Users.findOne({ email });
+    if (!user) {
+      return res.status(404).send({ message: 'User Not Found' });
     }
-    //Step 2: Compare the passwords
-    const isCorrect=user.comparePassword(password)
-    if(!isCorrect){
-        res.status(404).send({message:'Invalid Password'})
-        return
-    }
-    //Step 3: Generate Token
-    const token = user.generateToken()
-    user.tokens.push(token)
-    await user.save()
 
-    res.send({ message: 'User logged in successfully!',token })
-}
-    catch(e){
-        res.status(404).send({message:e.messsage})
+    // password check
+    const isCorrect = await user.comparePassword(password); 
+    if (!isCorrect) {
+      return res.status(400).send({ message: 'Invalid Password' });
     }
-})
+
+    // token generate
+    const token = user.generateToken();
+    user.tokens.push(token);
+    await user.save();
+
+    res.send({ message: 'User logged in successfully!', token });
+  } catch (e) {
+    console.error("Login error:", e); // 👈 console me exact error dikhega
+    res.status(500).send({ message: e.message });
+  }
+});
+
 
 router.put('/logout',verifyToken,async(req,res)=>{
     await Users.findByIdAndUpdate(req.userId, { $pull: { tokens: req.tokenToRemove } })

@@ -6,9 +6,9 @@ import cors from 'cors'
 
 const app = express()
 
-// app.listen(5000,()=>{
-//     console.log(`server is running port `);
-// })
+app.listen(5000,()=>{
+    console.log(`server is running port `);
+})
 app.use(express.json())
 // Root route for testing
 app.get("/", (req, res) => {

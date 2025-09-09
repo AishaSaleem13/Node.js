@@ -21,7 +21,7 @@ fullname: {
 },
 tokens:{
 default:[],
-type:[],
+type:[String],
 
 }
 
@@ -38,19 +38,15 @@ userschema.pre('save',function(next){
     next()
 }),
 
-userschema.methods.comparepassword = function (password) {
-    const user = this
+userschema.methods.comparePassword = function (password) {
+    const user = this;
+    return bcrypt.compareSync(password, user.password);
+};
 
-    //user.password === db password (encrypted) asjdhu2i346193
-    //password === frontend password (normal) 123456
-    console.log('db password', user.password)
-    console.log('frontend password', password)
-    
-    return bcrypt.compareSync(password, user.password)
-}
-,
+
 userschema.methods.generateToken = function() {
     const { _id } = this
+   
     const token = jwt.sign({ _id }, jwtSecret);
 
     return token
