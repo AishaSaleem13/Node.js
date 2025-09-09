@@ -18,33 +18,19 @@ router.get("/", async (req, res) => {
 // CREATE product
 router.post("/post", upload.single("image"), async (req, res) => {
   try {
-    const imageUrl = req.file?.path || "";
-
-    // Explicit conversion and only required fields
-    const productData = {
-      title: req.body.title,
-      brand: req.body.brand,
-      description: req.body.description,
-      price: Number(req.body.price),       // number me convert karo
-      availability: req.body.availability,
-      image: imageUrl
-    };
-
-    console.log("PRODUCT DATA:", productData);
+    const imageUrl = req.file?.path;
+    const productData = { ...req.body, image: imageUrl };
 
     const postProduct = new Products(productData);
     await postProduct.save();
 
-    res.send({ message: "data posted successfully", product: postProduct });
+    res.send({ message: "data posted successfully" });
   } catch (e) {
-    console.error("ERROR:", e);
     res.status(500).send({ message: e.message });
   }
 });
 
-
-
-    router.get('/id/:id', async (req, res) => {
+    router.get('/:id', async (req, res) => {
     try {
         const ad = await Products.findOne({ _id: req.params.id });
         res.send({ message: 'Data Fetched Successfully', singleProduct: ad });
