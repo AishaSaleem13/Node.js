@@ -18,19 +18,29 @@ router.get("/", async (req, res) => {
 // CREATE product
 router.post("/post", upload.single("image"), async (req, res) => {
   try {
-    const imageUrl = req.file?.path;
-    const productData = { ...req.body, image: imageUrl };
+    const imageUrl = req.file?.path || "";
+    const productData = {
+      title: req.body.title,
+      brand: req.body.brand,
+      description: req.body.description,
+      price: Number(req.body.price),
+      availability: req.body.availability,
+      image: imageUrl
+    };
+    console.log("PRODUCT DATA:", productData);
 
     const postProduct = new Products(productData);
     await postProduct.save();
 
-    res.send({ message: "data posted successfully" });
+    res.send({ message: "data posted successfully", product: postProduct });
   } catch (e) {
+    console.error("ERROR:", e);
     res.status(500).send({ message: e.message });
   }
 });
 
-    router.get('/:id', async (req, res) => {
+
+    router.get('/id/:id', async (req, res) => {
     try {
         const ad = await Products.findOne({ _id: req.params.id });
         res.send({ message: 'Data Fetched Successfully', singleProduct: ad });
