@@ -15,29 +15,36 @@ router.get("/", async (req, res) => {
 
 // Get single product by ID
 
-router.post('/post',upload.single('image'),async(req,res)=>{
-    console.log("REQ BODY:", req.body);
-console.log("REQ FILE:", req.file);
+// CREATE product
+router.post("/post", upload.single("image"), async (req, res) => {
+  try {
+    const imageUrl = req.file?.path || "";
 
-        try{
-            const imageUrl = req.file?.path; // Get the image URL from the uploaded file
-            const productData = {
-                ...req.body,
-                image: imageUrl // Add the image URL to the product data
-            };
+    // Explicit conversion and only required fields
+    const productData = {
+      title: req.body.title,
+      brand: req.body.brand,
+      description: req.body.description,
+      price: Number(req.body.price),       // number me convert karo
+      availability: req.body.availability,
+      image: imageUrl
+    };
 
-            const postProduct=new Products(productData);
-            await 
-            postProduct.save() 
-            res.send({ message: 'data posted successfully' })
-            console.log("data:", req.body);
-            
-        }
-        catch(e){
-            res.status(500).send({message:e.message})
-        }
-    })
-    router.get('/:id', async (req, res) => {
+    console.log("PRODUCT DATA:", productData);
+
+    const postProduct = new Products(productData);
+    await postProduct.save();
+
+    res.send({ message: "data posted successfully", product: postProduct });
+  } catch (e) {
+    console.error("ERROR:", e);
+    res.status(500).send({ message: e.message });
+  }
+});
+
+
+
+    router.get('/id/:id', async (req, res) => {
     try {
         const ad = await Products.findOne({ _id: req.params.id });
         res.send({ message: 'Data Fetched Successfully', singleProduct: ad });
