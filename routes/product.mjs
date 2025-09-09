@@ -14,14 +14,6 @@ router.get("/", async (req, res) => {
 });
 
 // Get single product by ID
-router.get('/:id', async (req, res) => {
-    try {
-        const ad = await Products.findOne({ _id: req.params.id });
-        res.send({ message: 'Data Fetched Successfully', singleProduct: ad });
-    } catch (e) {
-        res.send({ message: e.message });
-    }
-});
 
 router.post('/post',upload.single('image'),async(req,res)=>{
     console.log("REQ BODY:", req.body);
@@ -45,6 +37,15 @@ console.log("REQ FILE:", req.file);
             res.status(500).send({message:e.message})
         }
     })
+    router.get('/:id', async (req, res) => {
+    try {
+        const ad = await Products.findOne({ _id: req.params.id });
+        res.send({ message: 'Data Fetched Successfully', singleProduct: ad });
+    } catch (e) {
+        res.send({ message: e.message });
+    }
+});
+
 router.put('/:id', async (req, res) => {
     try {
         const updatedAd = await Products.findOneAndUpdate(
