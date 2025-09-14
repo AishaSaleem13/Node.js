@@ -3,6 +3,8 @@ const router = express.Router();
 import Products from "../models/product.mjs";
 import upload from "../middleware/upload.mjs";
 
+import verifyToken from "../middleware/varifytoken.mjs";
+
 // GET all products
 router.get("/", async (req, res) => {
   try {
@@ -14,30 +16,48 @@ router.get("/", async (req, res) => {
 });
 
 // CREATE product
+/// CREATE product
 router.post("/post", upload.single("image"), async (req, res) => {
   try {
-    const imageUrl = req.file?.path || "";
+    console.log("📩 Body:", req.body);
+    console.log("📷 File:", req.file);
 
-    const productData = {
-      title: req.body.title,
-      brand: req.body.brand,
-      description: req.body.description,
-      price: Number(req.body.price),
-      availability: req.body.availability,
+    if (!req.file) {
+      return res.status(400).send({ message: "Image not uploaded", file: req.file });
+    }
+
+    const imageUrl = req.file.path; // ✅ Cloudinary URL hota hai
+
+    const { title, description, price, brand, availability } = req.body;
+
+    if (!title || !description || !price || !brand || !availability) {
+      return res.status(400).send({ message: "All fields are required" });
+    }
+
+    const newProduct = new Products({
+      title,
+      description,
+      price,
+      brand,
+      availability,
       image: imageUrl,
-    };
+    });
 
-    console.log("PRODUCT DATA:", productData);
+    await newProduct.save();
 
-    const postProduct = new Products(productData);
-    await postProduct.save();
-
-    res.send({ message: "Data posted successfully", product: postProduct });
+    res.status(201).send({
+      message: "Product posted successfully",
+      Data: newProduct,
+    });
   } catch (e) {
-    console.error("ERROR:", e);
-    res.status(500).send({ message: e.message });
+    console.error("🔥 Error saving product:", e);
+    res.status(500).send({ message: "Server error", error: e.message });
   }
 });
+
+
+
+
 
 // GET product by ID
 router.get("/id/:id", async (req, res) => {

@@ -16,7 +16,8 @@ router.post('/register',async(req,res)=>{
     res.send({ message: "User registered successfully!" })
     }
     catch(e){
-        res.send({message:e.message})
+        res.send({message:`registering error`,
+         error: e.message})
     }
 })
 
@@ -43,7 +44,8 @@ router.post('/login', async (req, res) => {
     res.send({ message: 'User logged in successfully!', token });
   } catch (e) {
     console.error("Login error:", e); // 👈 console me exact error dikhega
-    res.status(500).send({ message: e.message });
+    res.status(500).send({ message:`error in generating token `,
+       error:e.message });
   }
 });
 
