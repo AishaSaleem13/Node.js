@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 });
 
 
-router.post("/post",verifyToken upload.single("image"), async (req, res) => {
+router.post("/post",verifyToken ,upload.single("image"), async (req, res) => {
   try {
     console.log("📩 Body:", req.body);
     console.log("📷 File:", req.file);
