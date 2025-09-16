@@ -1,13 +1,13 @@
 import multer from "multer";
-import cloudinary from "../config/cloudinary.mjs";  // default export
-import { CloudinaryStorage } from "multer-storage-cloudinary";  // ✅ sahi class
+import cloudinary from "../config/cloudinary.mjs";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "products",
-    allowed_formats: ["jpg", "png", "jpeg"], // ✅ key ka naam chhoti letters me
-    transformation: [{ width: 500, height: 500, crop: "limit" }]
+    format: async (req, file) => "png", // ya "jpg"
+    public_id: (req, file) => Date.now() + "-" + file.originalname.split(".")[0],
   },
 });
 
