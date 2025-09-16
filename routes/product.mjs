@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import Products from "../models/product.mjs";
 import upload from "../middleware/upload.mjs";
+import verifyToken from "../middleware/varifytoken.mjs";
 
 // GET all products
 router.get("/", async (req, res) => {
@@ -14,7 +15,7 @@ router.get("/", async (req, res) => {
 });
 
 
-router.post("/post", upload.single("image"), async (req, res) => {
+router.post("/post",verifyToken upload.single("image"), async (req, res) => {
   try {
     console.log("📩 Body:", req.body);
     console.log("📷 File:", req.file);
