@@ -13,7 +13,11 @@ async function verifyToken(req, res, next) {
     try {
         const decoded = jwt.verify(token, jwtSecret)
 
-        const tokenExists = await Users.findOne({ tokens: token })
+     console.log("🔑 Incoming token:", token);
+console.log("👤 Decoded:", decoded);
+console.log("🔎 DB search...");
+const tokenExists = await Users.findOne({ tokens: token });
+console.log("✅ tokenExists:", tokenExists)
 
         if (!tokenExists) {
             res.status(401).send({ message: "Invalid token!" })
