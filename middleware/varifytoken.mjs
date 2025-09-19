@@ -4,7 +4,7 @@ import jwtSecret from '../config/jwt.mjs';
 
 async function verifyToken(req, res, next) {
     const token = req.headers.authorization?.split(' ')[1]
-
+console.log("Incoming token:", token);
     if (!token) {
         res.status(401).send({ message: "No access!" })
         return
