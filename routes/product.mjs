@@ -43,9 +43,10 @@ router.post("/post", verifyToken, upload.single("image"), async (req, res) => {
     await newProduct.save();
 
     res.status(201).json({ message: "✅ Product added", newProduct });
-  } catch (e) {
-    console.error("🔥 Error in product post ", e);
-    res.status(500).json({ message: "Server error", error: e.message });
+  } 
+   catch(err){
+     console.error(err);  // log actual error
+     res.status(500).json({message: "Server error", error: err.message})
   }
 });
 
